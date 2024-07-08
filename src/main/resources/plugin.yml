@@ -1,0 +1,4 @@
+name: MonkeyUtils
+version: '${version}'
+main: com.monkeyteam.monkeyutils.MonkeyUtils
+api-version: '1.21'
