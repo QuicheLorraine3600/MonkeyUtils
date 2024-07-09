@@ -7,6 +7,7 @@ plugins {
     java
     kotlin("jvm") version "2.0.0"
     id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("com.ncorti.ktfmt.gradle") version "0.19.0"
 }
 
 group = "com.monkeyteam"
@@ -35,11 +36,15 @@ tasks {
     }
 
     register<Exec>("upload") {
+        mustRunAfter("shadowJar")
         val fileName = "${project.name}-${project.version}-all.jar"
         val sourceDirectory = "${rootDir.absolutePath}/build/libs/"
         val destinationDirectory = getLocalProperty("DESTINATION_DIRECTORY")
         val ftp = getLocalProperty("FTP")
         commandLine("scp ${sourceDirectory}${fileName} ${ftp}:${destinationDirectory}${fileName}".split(" "))
+        doLast {
+            println("Upload done !")
+        }
     }
 }
 

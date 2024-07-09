@@ -5,11 +5,16 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 
-object Reload: CommandExecutor {
-    override fun onCommand(sender: CommandSender, cmd: Command, label: String, args: Array<out String>): Boolean {
-        sender.sendMessage("Reloading config...")
-        instance.reloadConfig()
-        sender.sendMessage("Config reloaded")
-        return true
-    }
+object Reload : CommandExecutor {
+  override fun onCommand(
+      sender: CommandSender,
+      cmd: Command,
+      label: String,
+      args: Array<out String>
+  ): Boolean {
+    sender.sendMessage("Reloading config...")
+    instance.reloadConfig()
+    sender.sendMessage("Config reloaded")
+    return true
+  }
 }
