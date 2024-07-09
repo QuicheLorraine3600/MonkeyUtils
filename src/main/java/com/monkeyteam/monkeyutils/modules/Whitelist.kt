@@ -10,12 +10,12 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerLoginEvent
 
 object Whitelist : Listener, CommandExecutor {
-  private val config = MonkeyUtils.instance.config
-
   @EventHandler
   fun onPlayerConnect(event: PlayerLoginEvent) {
     val player = event.player
-    if (!config.getStringList("whitelist").contains(player.name.lowercase(Locale.getDefault()))) {
+    if (!MonkeyUtils.instance.config
+        .getStringList("whitelist")
+        .contains(player.name.lowercase(Locale.getDefault()))) {
       event.disallow(PlayerLoginEvent.Result.KICK_WHITELIST, "Pas dans la whitelist !")
     }
   }
@@ -26,11 +26,12 @@ object Whitelist : Listener, CommandExecutor {
       label: String,
       args: Array<out String>
   ): Boolean {
-    val whitelist: List<String> = config.getStringList("whitelist")
+    val whitelist: List<String> = MonkeyUtils.instance.config.getStringList("whitelist")
     if (args.size >= 2) {
       if (args[0].equals("add", ignoreCase = true)) {
         if (!whitelist.contains(args[1].lowercase(Locale.getDefault()))) {
-          config.set("whitelist", whitelist + args[1].lowercase(Locale.getDefault()))
+          MonkeyUtils.instance.config.set(
+              "whitelist", whitelist + args[1].lowercase(Locale.getDefault()))
           MonkeyUtils.instance.saveConfig()
           sender.sendMessage("Joueur ajouté")
           return true
@@ -40,7 +41,8 @@ object Whitelist : Listener, CommandExecutor {
       }
       if (args[0].equals("remove", ignoreCase = true)) {
         if (whitelist.contains(args[1].lowercase(Locale.getDefault()))) {
-          config.set("whitelist", whitelist - args[1].lowercase(Locale.getDefault()))
+          MonkeyUtils.instance.config.set(
+              "whitelist", whitelist - args[1].lowercase(Locale.getDefault()))
           MonkeyUtils.instance.saveConfig()
           sender.sendMessage("Joueur retiré")
           return true

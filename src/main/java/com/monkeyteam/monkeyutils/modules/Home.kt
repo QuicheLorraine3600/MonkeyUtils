@@ -8,8 +8,6 @@ import org.bukkit.entity.Player
 
 object Home {
   object HomeCommand : CommandExecutor {
-    private val config = MonkeyUtils.instance.config
-
     override fun onCommand(
         sender: CommandSender,
         cmd: Command,
@@ -17,7 +15,7 @@ object Home {
         args: Array<String>
     ): Boolean {
       if (sender is Player) {
-        val home = config.getLocation("homes." + sender.getName())
+        val home = MonkeyUtils.instance.config.getLocation("homes." + sender.getName())
         if (home == null) {
           sender.sendMessage("§rPas de home défini, faites §3/sethome §rpour en définir un !")
           return true
