@@ -1,6 +1,12 @@
+import java.io.FileInputStream
+import java.io.InputStreamReader
+import java.util.Properties
+import java.util.regex.Pattern.compile
+
 plugins {
     java
     kotlin("jvm") version "2.0.0"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 group = "com.monkeyteam"
@@ -19,13 +25,34 @@ repositories {
 }
 
 dependencies {
-   compileOnly("org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT")
+    compile ("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 }
 
 tasks {
     processResources {
         expand("version" to project.version)
     }
+
+    register<Exec>("upload") {
+        val fileName = "${project.name}-${project.version}-all.jar"
+        val sourceDirectory = "${rootDir.absolutePath}/build/libs/"
+        val destinationDirectory = getLocalProperty("DESTINATION_DIRECTORY")
+        val ftp = getLocalProperty("FTP")
+        commandLine("scp ${sourceDirectory}${fileName} ${ftp}:${destinationDirectory}${fileName}".split(" "))
+    }
+}
+
+fun getLocalProperty(key: String, file: String = "local.properties"): Any {
+    val properties = Properties()
+    val localProperties = File(file)
+    if (localProperties.isFile) {
+        InputStreamReader(FileInputStream(localProperties), Charsets.UTF_8).use { reader ->
+            properties.load(reader)
+        }
+    } else error("File from not found")
+
+    return properties.getProperty(key)
 }
 
 //def targetJavaVersion = 21
