@@ -2,3 +2,26 @@ name: MonkeyUtils
 version: '${version}'
 main: com.monkeyteam.monkeyutils.MonkeyUtils
 api-version: '1.21'
+author: Monkey Prince
+commands:
+  back:
+    description: Go back to your death point
+    usage: /back
+  home:
+    description: Go to your home, you can define a home via the /sethome command
+    usage: /home
+  sethome:
+    description: Define your home location, you can teleport there via the /home command
+    usage: /sethome
+  openinventory:
+    description: Open the inventory of another player
+    usage: /openinventory <player>
+    permission: op
+  monkeyreload:
+    description: Reload MonkeyUtils
+    usage: /monkeyreload
+  whitelist:
+    description: Edit the whitelist
+    usage: /whitelist <add/remove> <player>
+    permission: op
+
